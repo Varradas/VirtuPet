@@ -2,28 +2,39 @@ package files;
 
 public class VirtuPet {
 
-    public static void main(String[] args) { //just testing the output of Pet class, not indicative of the final
-        Pet test = new Pet();
+    public static void main(String[] args) { //just testing the output of classes, not indicative of the final
 
-    System.out.println("Species: " + test.species);
-    System.out.println("Emotional Value: " + test.emotional_value);
-    System.out.println("Hunger: " + test.hunger_level);
-    System.out.println("Mood: " + test.mood_level);
-    System.out.println("Energy: " + test.energy);
+        Pet[] pets = new Pet[100]; //array to store pet data
 
-    System.out.println("\nCurrent Hunger Level: " + test.action_Eat());
+            pets[0] = new Pet();
+            pets[0].name = "Bubbles"; //Name needs to be decided by user through input
+            pets[0].species = "Doggo"; //Species needs to be from a list
 
-    System.out.println("Current Hunger Level: " + test.hunger_level);
-    System.out.println("Hunger After Eating: " + test.action_Eat());
+            pets[1] = new Pet();
+            pets[1].name = "Drago";
+            pets[1].species = "Cat";
 
-    System.out.println("\n\nCurrent Energy: " + test.energy);
-    System.out.println("Energy after Resting: " + test.action_Rest());
-    System.out.println("Mood: " + test.mood_level);
+            pets[2] = new Pet();
+            pets[2].name = "Lemon";
+            pets[2].species = "Parrot";
+
+        pets[0].displayAllPetDetails(pets);
+
+        Food[] food = new Food[100]; //array to store food data, probably will be in another file.
     
+            food[0] = new Food();
+            food[0].setFoodName("Chicken");
+            food[0].setFoodValue(10);
 
+            food[1] = new Food();
+            food[1].setFoodName("Peas");
+            food[1].setFoodValue(3);
 
+            food[2] = new Food();
+            food[2].setFoodName("Fish");
+            food[2].setFoodValue(12);
 
-
+        food[0].displayFoodDetails(food);
 
     }
 }
