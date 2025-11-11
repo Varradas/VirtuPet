@@ -1,0 +1,7 @@
+Use of ANSI Colors can be done easier by using hex to ANSI picker:
+
+open cmd and navigate to its folder: cd /d D:\Downloads\hex_to_ansi-main
+
+run: uv run hex_to_ansi.pyw
+
+For java, use \u001B to start using ANSI before printing, ESC doesn't work for java.
