@@ -1,29 +1,32 @@
-package files;
+package virtupetClasses;
 
-public class Food {
+import java.io.Serializable;
+
+public class Food implements Serializable{
     protected String name;
     protected float value;
 
-    Food(){
+    public Food(){
         name = "standard";
         value = 1;
     }
 
-    void setFoodName(String n){
+    public void setFoodName(String n){
         name = n;
     }
-    void setFoodValue(float n){
+    public void setFoodValue(float n){
         value = n;
     }
 
-    String getFoodName(){
+    public String getFoodName(){
         return name;
     }
-    float getFoodValue(){
+    public float getFoodValue(){
         return value;
     }
 
-    void displayFoodDetails(Food[] n){
+    public void displayFoodDetails(Food[] n){
+        
         for (Food foodInventory : n) { //move to Pet.java
             if (foodInventory == null) {
                 System.err.println("""
@@ -34,6 +37,7 @@ public class Food {
             System.err.println("\nName of food: " + foodInventory.getFoodName());
             System.err.println("Species: " + foodInventory.getFoodValue());
         }
+        
     }
 
 }

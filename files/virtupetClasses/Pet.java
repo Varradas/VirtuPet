@@ -1,17 +1,19 @@
-package files;
+package virtupetClasses;
+
+import java.io.Serializable;
 import java.util.Random;
 
-public class Pet {
-    String species;
-    String name;
-    double emotional_value;
-    float hunger_level;
-    float mood_level;
-    float energy;
-    float[] activity_multiplier; //Bonuses/Penalties in each activity for each pet
-    float[] food_multiplier; //Bonuses/Penalties in each food for each pet
+public class Pet implements Serializable{
+    private String species;
+    private String name;
+    private double emotional_value;
+    private float hunger_level;
+    private float mood_level;
+    private float energy;
+    private float[] activity_multiplier; //Bonuses/Penalties in each activity for each pet
+    private float[] food_multiplier; //Bonuses/Penalties in each food for each pet
 
-    Pet() { //Test out the RNG for hunger, mood and level, 
+    public Pet() { //Test out the RNG for hunger, mood and level, 
         species = "default_stats";
 
         hunger_level = new Random().nextInt(70,101); //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
@@ -22,11 +24,12 @@ public class Pet {
 
     }
 
-    void updateEmotionalValue(){
+    public void updateEmotionalValue(){
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
     }
 
-    void displayAllPetDetails(Pet[] n){
+    public void displayAllPetDetails(Pet[] n){
+        
         for (Pet myPets : n) { 
             if (myPets == null) {
                 System.err.println("""
@@ -41,9 +44,35 @@ public class Pet {
             System.err.println("Mood: " + myPets.mood_level);
             System.err.println("Energy: " + myPets.energy);
         }
+        
     }
 
-    float actionEat(){ //NEEDS AN INPUT, CHOSEN FOOD AND FOOD MULTIPLIER OF CURRENT PET
+    public void setName(String n) {
+        name = n;
+    }
+
+    public void setSpecies(String n) {
+        species = n;
+    }
+    
+    public String getPetName(){
+        return name;
+    }
+    public String getSpecies(){
+        return species;
+    }
+
+
+
+
+
+
+
+
+
+    //actions will probably be moved to their own class.
+
+    public float actionEat(){ //NEEDS AN INPUT, CHOSEN FOOD AND FOOD MULTIPLIER OF CURRENT PET
         //food_value will change depending on the food, the "1" is a multiplier that changes depending on the pet's preferences.
         float food_value = 20*1;
         if ((food_value + hunger_level) >= 100) {
@@ -58,7 +87,7 @@ public class Pet {
         }
     }
 
-    float actionRest(){ //All done
+    public float actionRest(){ //All done
         int restRng = new Random().nextInt(10);
         int rest_value;
 
