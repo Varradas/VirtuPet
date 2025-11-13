@@ -33,8 +33,8 @@ public class Pet implements Serializable{
         for (Pet myPets : n) { 
             if (myPets == null) {
                 System.err.println("""
-                                    \u001b[1;31m
-                                    Finished Looping through available pets.\u001b[0m""");
+                                    \u001b[38;5;202m
+                                    Finished Looping through available pets.\n\u001b[0m""");
                 break;
             }
             System.err.println("\nName: " + myPets.name);

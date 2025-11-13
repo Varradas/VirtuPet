@@ -71,14 +71,20 @@ public class test {
                     if (pets[0] != null){
                         pets[0].displayAllPetDetails(pets);
                     } else {
-                        System.out.println("\nError: No pet data loaded, Please load pet data first.\n");
+                        System.err.println("""  
+                                                \u001b[38;5;196m
+                                \nError: No pet data loaded, Please load pet data first.\n
+                                                \u001b[0m""");
                     }
                 }
                 case 8 -> {
                     if (food[0] != null){
                         food[0].displayFoodDetails(food);
                     } else {
-                        System.out.println("\nError: No food data loaded, Please load food data first.\n");
+                        System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nError: No food data loaded, Please load food data first.\n
+                                                \u001b[0m""");
                     }
                 }
                 default -> {
@@ -100,10 +106,16 @@ public class test {
             pets = (Pet[]) in.readObject();
             in.close();
             fileIn.close();
-            System.out.println("\nPet Data Loaded Succesfully!\n");
+            System.out.println("""  
+                                                \u001b[38;5;46m
+                                \nPet Data Loaded Succesfully!\n
+                                                \u001b[0m""");
             return pets;
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("\nNo Pet Data to Load.\n");
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nNo Pet Data to Load.\n
+                                                \u001b[0m""");
             return pets;
         } finally {
             if (in != null){
@@ -125,10 +137,16 @@ public class test {
             food = (Food[]) in.readObject();
             in.close();
             fileIn.close();
-            System.out.println("\nFood Data Loaded Succesfully!\n");
+            System.out.println("""  
+                                                \u001b[38;5;46m
+                                \nFood Data Loaded Succesfully!\n
+                                                \u001b[0m""");
             return food;
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("\nNo Food Data to Load.\n");
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nNo Food Data to Load.\n
+                                                \u001b[0m""");
             return food;
         } finally {
             if (in != null){
@@ -144,7 +162,10 @@ public class test {
         ObjectOutputStream out = null;
         
         if (pets[0] == null){
-            System.out.println("\nNo Pet Data to Save.\n");
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nNo Pet Data to Save.\n
+                                                \u001b[0m""");
             return;
         }
 
@@ -156,7 +177,10 @@ public class test {
             out.writeObject(pets);
             out.close();
             fileOut.close();
-            System.out.println("\nPet Data Saved.\n");
+            System.out.println("""  
+                                                \u001b[38;5;46m
+                                \nPet Data Saved.\n
+                                                \u001b[0m""");
         } catch (IOException ex) {
         } finally {
             try {
@@ -170,7 +194,10 @@ public class test {
         ObjectOutputStream out = null;
 
         if (food[0] == null){
-            System.out.println("\nNo Food Data to Save.\n");
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nNo Food Data to Save.\n
+                                                \u001b[0m""");
             return;
         }
 
@@ -182,9 +209,11 @@ public class test {
             out.writeObject(food);
             out.close();
             fileOut.close();
-            System.out.println("\nFood Data Saved.\n");
+            System.out.println("""  
+                                                \u001b[38;5;46m
+                                \nFood Data Saved.\n
+                                                \u001b[0m""");
         } catch (IOException ex) {
-            System.out.println("\nNo Food Data to Save.\n");
         } finally {
             try {
                 out.close();

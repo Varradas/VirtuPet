@@ -30,8 +30,8 @@ public class Food implements Serializable{
         for (Food foodInventory : n) { //move to Pet.java
             if (foodInventory == null) {
                 System.err.println("""
-                                    \u001b[1;32m
-                                    Finished Looping through available food.\u001b[0m""");
+                                    \u001b[38;5;202m
+                                    Finished Looping through available food.\n\u001b[0m""");
                 break;
             }
             System.err.println("\nName of food: " + foodInventory.getFoodName());
