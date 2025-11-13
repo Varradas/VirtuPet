@@ -1,0 +1,9 @@
+This folder is to be used by the devs primarily to experiment with ANSI escape codes.
+
+Use of ANSI Colors can be done easier by using hex to ANSI picker:
+
+download hex_to_ansi-main, open cmd and navigate to its folder, example: cd /d D:\Downloads\hex_to_ansi-main
+
+run this command, you should see a window pop up after waiting: uv run hex_to_ansi.pyw
+
+For java, use \u001B to start using ANSI before printing, ESC doesn't work for java.
