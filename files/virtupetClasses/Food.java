@@ -35,7 +35,7 @@ public class Food implements Serializable{
                 break;
             }
             System.err.println("\nName of food: " + foodInventory.getFoodName());
-            System.err.println("Species: " + foodInventory.getFoodValue());
+            System.err.println("Value: " + foodInventory.getFoodValue());
         }
         
     }
