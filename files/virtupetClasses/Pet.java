@@ -10,18 +10,28 @@ public class Pet implements Serializable{
     private float hunger_level;
     private float mood_level;
     private float energy;
-    private float[] activity_multiplier; //Bonuses/Penalties in each activity for each pet
-    private float[] food_multiplier; //Bonuses/Penalties in each food for each pet
+    private final float[] activity_multiplier; //Bonuses/Penalties in each activity for each pet
+    private final float[] food_multiplier; //Bonuses/Penalties in each food for each pet
 
     public Pet() { //Test out the RNG for hunger, mood and level, 
-        species = "default_stats";
+        Random random = new Random();
 
-        hunger_level = new Random().nextInt(70,101); //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
-        mood_level = new Random().nextInt(40,61); //Upper limit is 100, lower limit is 1, random for each new instance from 40-60
-        energy = new Random().nextInt(70,101); //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
+        hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
+        mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 40-60
+        energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0; //needs testing, also needs enum Emotional Value
 
+        activity_multiplier = new float[]{ // Multipliers go from -100 to 100, eg. (Value = 10, possible range becomes -10 to 10)
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f,
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f,
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f
+        };
 
+        food_multiplier = new float[]{
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f,
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f,
+            Math.round(random.nextFloat(-100.0f,100.0f)  * 10) / 10.0f
+        };
     }
 
     public void updateEmotionalValue(){
@@ -43,6 +53,19 @@ public class Pet implements Serializable{
             System.err.println("Hunger: " + myPets.hunger_level);
             System.err.println("Mood: " + myPets.mood_level);
             System.err.println("Energy: " + myPets.energy);
+
+            System.err.println("Activity Multipliers: ");
+            for (int i = 0; i < myPets.activity_multiplier.length; i++){
+                int x = i+1;
+                System.err.println("\nActivity " + x + ": " + myPets.activity_multiplier[i]);
+            }
+            System.err.println("Food Multipliers: ");
+            for (int i = 0; i < myPets.food_multiplier.length; i++){
+                int x = i+1;
+                System.err.println("\nFood " + x + ": " + myPets.food_multiplier[i]);
+            }
+
+            
         }
         
     }
@@ -54,7 +77,19 @@ public class Pet implements Serializable{
     public void setSpecies(String n) {
         species = n;
     }
+
+    public void setHunger(float n) {
+        hunger_level = Math.round(n*10) / 10.0f;
+    }
+
+    public void setMood(float n) {
+        mood_level = Math.round(n*10) / 10.0f;
+    }
     
+    public void setEnergy(float n) {
+        energy = Math.round(n*10) / 10.0f;
+    }
+
     public String getPetName(){
         return name;
     }
@@ -62,71 +97,28 @@ public class Pet implements Serializable{
         return species;
     }
 
-
-
-
-
-
-
-
-
-    //actions will probably be moved to their own class.
-
-    public float actionEat(){ //NEEDS AN INPUT, CHOSEN FOOD AND FOOD MULTIPLIER OF CURRENT PET
-        //food_value will change depending on the food, the "1" is a multiplier that changes depending on the pet's preferences.
-        float food_value = 20*1;
-        if ((food_value + hunger_level) >= 100) {
-            hunger_level = 100;
-            updateEmotionalValue();
-            return hunger_level;
-        }
-        else {
-            hunger_level = hunger_level + food_value;
-            updateEmotionalValue();
-            return hunger_level;
-        }
+    public float getHunger() {
+        return hunger_level;
     }
 
-    public float actionRest(){ //All done
-        int restRng = new Random().nextInt(10);
-        int rest_value;
-
-        if (restRng < 7){ //70% chance, standard energy value
-            rest_value = 50;
-        }
-        else if (restRng < 9){ // 20% chance, greater energy value
-            rest_value = 70;
-            mood_level = mood_level + 5;
-        }
-        else { // 10% chance, either greatest energy value or lower energy value
-            int chance = new Random().nextInt(10);
-            if (chance < 5) { // 50% chance of greatest energy value
-                rest_value = 100;
-                mood_level = mood_level + 10;
-            }
-            else { // 50% chance of lower energy value
-                rest_value = 20;
-                mood_level = mood_level - 10;
-            }
-        }
-
-        if (mood_level >= 100) { // Takes into account if mood goes past 100
-            mood_level = 100;
-        }
-        
-        if ((rest_value + energy) >= 100) {
-            energy = 100;
-            updateEmotionalValue();
-            return energy;
-        }
-        else {
-            energy = energy + rest_value;
-            updateEmotionalValue();
-            return energy;
-        }
+    public float getMood() {
+        return mood_level;
+    }
+    
+    public float getEnergy() {
+        return energy;
     }
 
-    //void actionPlay(){ //NEEDS AN INPUT, CHOSEN PET AND CHOSEN ACTION
-        // Maybe an array input, we choose the action's value, and take the corresponding multiplier for that action for the chosen pet. Needs those parts to be done before this gets started.
-    //}
+    public float getActivityMultiplier(int n){
+        return activity_multiplier[n];
+    }
+
+    public float getFoodMultiplier(int n){
+        return food_multiplier[n];
+    }
+
+
+
+
+
 }
