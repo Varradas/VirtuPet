@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Action{
@@ -106,7 +107,6 @@ public class Action{
     }
 
     public static void printSprite(Species petPath, int frame){ //Work in Progress
-        // String filePath = "sprites\\dog.txt"; // Replace with the actual path
         Path filePath = Paths.get("sprites", petPath.name(), frame + ".txt");
         try {
             String content = Files.readString(filePath, StandardCharsets.UTF_8);
@@ -134,41 +134,40 @@ public class Action{
         }
     }
 
-    public static Pet[] loadPetData(Pet[] pets){        
-        ObjectInputStream in = null;
-        try {
-            //Deserialize petData.ser to pet array
-            String filepath = "data\\petData.ser";
-            try (FileInputStream fileIn = new FileInputStream(filepath)) {
-                in = new ObjectInputStream(fileIn);
-                pets = (Pet[]) in.readObject();
-                in.close();
-            }
-            System.out.println("""  
-                                                \u001b[38;5;46m
-                                \nPet Data Loaded Succesfully!\n
-                                                \u001b[0m""");
-            return pets;
-        } catch (IOException | ClassNotFoundException ex) {
+    public static ArrayList<Pet> loadPetData(ArrayList<Pet> pets){     
+        Path filePath = Paths.get("data", "petData.ser");
+    
+        if (!Files.exists(filePath)) {
             System.out.println("""  
                                                 \u001b[38;5;196m
                                 \nNo Pet Data to Load.\n
                                                 \u001b[0m""");
             return pets;
-        } finally {
-            if (in != null){
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                }
-            }
+        }
+
+        try (FileInputStream fileIn = new FileInputStream(filePath.toFile());
+            ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            
+            @SuppressWarnings("unchecked")
+            ArrayList<Pet> loadedPets = (ArrayList<Pet>) in.readObject();
+            
+            System.out.println("""  
+                                                \u001b[38;5;46m
+                                \nPet Data Loaded Succesfully!\n
+                                                \u001b[0m""");
+            return loadedPets;
+            
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nError loading pet data: \u001b[0m""" + ex.getMessage());
+            return pets;
         }
     }
 
-    public static void savePetData(Pet[] pets){         
-        ObjectOutputStream out = null;
+    public static void savePetData(ArrayList<Pet> pets){   
         
-        if (pets[0] == null){
+        if (pets.isEmpty()) {
             System.out.println("""  
                                                 \u001b[38;5;196m
                                 \nNo Pet Data to Save.\n
@@ -176,24 +175,30 @@ public class Action{
             return;
         }
 
+        Path filePath = Paths.get("data", "petData.ser");
+        
+        // Create directory if it doesn't exist yet
         try {
-            //Serialize pet array to petData.ser
-            String filepath = "data\\petData.ser";
-            try (FileOutputStream fileOut = new FileOutputStream(filepath)) {
-                out = new ObjectOutputStream(fileOut);
-                out.writeObject(pets);
-                out.close();
-            }
+            Files.createDirectories(filePath.getParent());
+        } catch (IOException ex) {
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nError creating data directory: \u001b[0m""" + ex.getMessage());
+            return;
+        }
+
+        try (FileOutputStream fileOut = new FileOutputStream(filePath.toFile());
+            ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            
+            out.writeObject(pets);
             System.out.println("""  
                                                 \u001b[38;5;46m
                                 \nPet Data Saved.\n
                                                 \u001b[0m""");
         } catch (IOException ex) {
-        } finally {
-            try {
-                out.close();
-            } catch (IOException ex) {
-            }
+            System.out.println("""  
+                                                \u001b[38;5;196m
+                                \nError saving pet data: \u001b[0m""" + ex.getMessage());
         }
     }
 

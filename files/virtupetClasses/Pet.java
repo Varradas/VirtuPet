@@ -3,6 +3,7 @@
 package virtupetClasses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 public final class Pet implements Serializable{
@@ -16,10 +17,13 @@ public final class Pet implements Serializable{
     private final Object[][] activity_multiplier; //Bonuses/Penalties in each activity for each pet
     private final Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
 
-    public Pet() { //Test out the RNG for hunger, mood and level, 
+    public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level, 
         Random random = new Random();
         Activity[] activities = Activity.values();
         Food[] food = Food.values();
+
+        this.name = name;
+        this.species = species;
 
         hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
         mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 40-60
@@ -67,15 +71,9 @@ public final class Pet implements Serializable{
         }
     }
 
-    public void displayAllPetDetails(Pet[] n){
+    public void displayAllPetDetails(ArrayList<Pet> n){
         
         for (Pet myPets : n) { 
-            if (myPets == null) {
-                System.out.println("""
-                                    \u001b[38;5;202m
-                                    Finished Looping through available pets.\n\u001b[0m""");
-                break;
-            }
             System.out.println("\nName: " + myPets.name);
             System.out.println("Species: " + myPets.species);
             System.out.println("Emotional Value: " + myPets.emotional_value);
@@ -98,6 +96,11 @@ public final class Pet implements Serializable{
             
         }
         
+        System.out.println("""
+                            \u001b[38;5;202m
+            Finished Looping through available pets.\n
+                            \u001b[0m""");
+
     }
 
     public void setName(String n) {

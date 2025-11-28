@@ -8,20 +8,13 @@ public class test {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException { //just testing the output of classes, not indicative of the final
 
-        Pet[] pets = new Pet[100]; //array to store pet data
+        ArrayList<Pet> pets = new ArrayList<>();
+
         Scanner input = new Scanner(System.in);
 
-        pets[0] = new Pet();
-        pets[0].setName("Bubbles"); 
-        pets[0].setSpecies(Species.DOG); 
-
-        pets[1] = new Pet();
-        pets[1].setName("Drago");
-        pets[1].setSpecies(Species.CAT);
-
-        pets[2] = new Pet();
-        pets[2].setName("Lemon");
-        pets[2].setSpecies(Species.BIRD);
+        pets.add(new Pet("Bubbles", Species.DOG));
+        pets.add(new Pet("Drago", Species.CAT));
+        pets.add(new Pet("Lemon", Species.BIRD));
 
         OUTER:
         while (true) {
@@ -49,36 +42,36 @@ public class test {
                     int x = 0;
                     int z = 1;
                     //Testing Eat Function
-                    System.out.println("Feeding " + pets[y].getPetName() + "...");
-                    System.out.println("Current Hunger Level: " + pets[y].getHunger());
-                    System.out.println("Hunger Multiplier: " + pets[y].getFoodMultiplier(0));
+                    System.out.println("Feeding " + pets.get(y).getPetName() + "...");
+                    System.out.println("Current Hunger Level: " + pets.get(y).getHunger());
+                    System.out.println("Hunger Multiplier: " + pets.get(y).getFoodMultiplier(0));
                     System.out.println("Chosen Food: " + Food.CHICKEN + ": "+ Food.CHICKEN.foodValue);
-                    Action.Eat(pets[y], Food.CHICKEN);
-                    System.out.println("After Eating Hunger Level: " + pets[y].getHunger());
+                    Action.Eat(pets.get(y), Food.CHICKEN);
+                    System.out.println("After Eating Hunger Level: " + pets.get(y).getHunger());
 
                     //Testing Rest Function
-                    System.out.println("\nCurrently Resting: " + pets[x].getPetName() + "...");
-                    System.out.println("Current Energy Level: " + pets[x].getEnergy());
-                    System.out.println("Current Mood Level: " + pets[x].getMood());
-                    Action.Rest(pets[x]);
-                    System.out.println("After Resting Energy Level: " + pets[x].getEnergy());
-                    System.out.println("After Resting Mood Level: " + pets[x].getMood());
+                    System.out.println("\nCurrently Resting: " + pets.get(x).getPetName() + "...");
+                    System.out.println("Current Energy Level: " + pets.get(x).getEnergy());
+                    System.out.println("Current Mood Level: " + pets.get(x).getMood());
+                    Action.Rest(pets.get(x));
+                    System.out.println("After Resting Energy Level: " + pets.get(x).getEnergy());
+                    System.out.println("After Resting Mood Level: " + pets.get(x).getMood());
 
                     //Testing Activity Function
-                    System.out.println("\nPlaying with " + pets[z].getPetName() + "...");
+                    System.out.println("\nPlaying with " + pets.get(z).getPetName() + "...");
                     System.out.println("Chosen Activity: " + Activity.WALK);
-                    System.out.println("Current Energy Level: " + pets[z].getEnergy());
-                    System.out.println("Current Mood Level: " + pets[z].getMood());
-                    Action.Play(pets[z], Activity.WALK);
-                    System.out.println("After Playing Energy Level: " + pets[z].getEnergy());
-                    System.out.println("After Playing Mood Level: " + pets[z].getMood());
+                    System.out.println("Current Energy Level: " + pets.get(z).getEnergy());
+                    System.out.println("Current Mood Level: " + pets.get(z).getMood());
+                    Action.Play(pets.get(z), Activity.WALK);
+                    System.out.println("After Playing Energy Level: " + pets.get(z).getEnergy());
+                    System.out.println("After Playing Mood Level: " + pets.get(z).getMood());
                 }
                 case 4 -> { //Testing ANSI
-                    Action.runIdleAnimation(pets[1]);
+                    Action.runIdleAnimation(pets.get(1));
                 }
                 case 5 -> {
-                    if (pets[0] != null){
-                        pets[0].displayAllPetDetails(pets);
+                    if (!pets.isEmpty()){
+                        pets.get(0).displayAllPetDetails(pets);
                     } else {
                         System.err.println("""  
                                                 \u001b[38;5;196m
