@@ -118,7 +118,7 @@ This project is created for **educational purposes** under the **Object-Oriented
 ---
 
 ## Update Log
-**11/13/2025 - De Castro, Vinz Gabriel**
+**11/13/2025**
 - Redid file structure, classes are now under the virtupetClasses folder, no changes on the classes themselves.
 - Serialization/Deserialization of both the Pet and Food classes have been figured out, save files are located in "files/data" folder.
 - New "test.java" file, will be used to test the methods that will be used to manipulate the data of each object, so far it demonstrates how object data is saved/loaded. I could    have also demonstrated resting and eating though I got lazy. Plus the eat action is better tested when the multipliers and food data is finalized. This file will also likely      become a dev file used to easily change the data found in foodData.ser considering the player won't have access to it.
@@ -127,9 +127,14 @@ This project is created for **educational purposes** under the **Object-Oriented
 - Pet class still incomplete, will need to figure out how to implement the activity_multiplier and food_multiplier to vary each pet's favorite activities/food.
 - Need to figure out how to implement ENUMs that corresponds to the current emotional value level, maybe also for the Species that we'll determine to be available.
 
-**11/25/2025 - De Castro, Vinz Gabriel**
+**11/25/2025**
 - Activity class added, similar to the Food class but it will instead be used for all activities other than resting and eating. STC
 - Action class added, pretty much all methods involving the modification of pet data is done here, also moved the save/load methods to this file. Math for how each multiplier affects each action is still not final.
 - Pet Class is as good as done at this point, how the multipliers get constructed might get changed, since at the moment we'll have to manually add another element into the array whenever a new food/activity is added.
 - Still haven't done ENUMS, will have to work on that.
+
+**11/28/2025**
+- Complete overhaul of Food and Activity classes, they're ENUMs now for easy modification for devs, function to modify the data for these classes outside the Enum has been removed, same for the save/load functions for these two.
+- Species and EmotionalState ENUMs added.
+- Experimental method for printing ANSII art added for testing.
 
