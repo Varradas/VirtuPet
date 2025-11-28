@@ -74,7 +74,7 @@ public class test {
                     System.out.println("After Playing Mood Level: " + pets[z].getMood());
                 }
                 case 4 -> { //Testing ANSI
-                    Action.printSprite();
+                    Action.runIdleAnimation(pets[1]);
                 }
                 case 5 -> {
                     if (pets[0] != null){

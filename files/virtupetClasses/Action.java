@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -104,14 +105,32 @@ public class Action{
         }
     }
 
-    public static void printSprite(){ //Work in Progress
-        String filePath = "sprites\\dog1.txt"; // Replace with the actual path        
+    public static void printSprite(Species petPath, int frame){ //Work in Progress
+        // String filePath = "sprites\\dog.txt"; // Replace with the actual path
+        Path filePath = Paths.get("sprites", petPath.name(), frame + ".txt");
         try {
-            String content = Files.readString(Paths.get(filePath), StandardCharsets.UTF_8);
+            String content = Files.readString(filePath, StandardCharsets.UTF_8);
             System.out.println(content);
             
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    public static void runIdleAnimation(Pet pet){
+        for (int i = 0; i < 10; i++){
+                System.out.println("\u001b[2J");
+            Action.printSprite(pet.getSpecies(), 1);
+            Action.delay(190);
+                System.out.println("\u001b[2J");
+            Action.printSprite(pet.getSpecies(), 2);
+            Action.delay(190);
+                System.out.println("\u001b[2J");
+            Action.printSprite(pet.getSpecies(), 3);
+            Action.delay(190);
+                System.out.println("\u001b[2J");
+            Action.printSprite(pet.getSpecies(), 4);
+            Action.delay(190);
         }
     }
 
@@ -175,6 +194,15 @@ public class Action{
                 out.close();
             } catch (IOException ex) {
             }
+        }
+    }
+
+    public static void delay(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Delay interrupted");
         }
     }
 
