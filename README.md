@@ -135,6 +135,7 @@ This project is created for **educational purposes** under the **Object-Oriented
 
 **11/28/2025**
 - Complete overhaul of Food and Activity classes, they're ENUMs now for easy modification for devs, function to modify the data for these classes outside the Enum has been removed, same for the save/load functions for these two.
+- Due to the changes made for the Food and Activity classes, Action and Pet classes were also updated to compensate for the changes.
 - Species and EmotionalState ENUMs added.
 - Experimental method for printing ANSII art added for testing.
 
