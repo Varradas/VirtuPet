@@ -11,4 +11,5 @@ public enum EmotionalState {
    GOOD_SPIRITED,
    HAPPY,
    ECSTATIC;
+   
 }

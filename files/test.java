@@ -11,17 +11,17 @@ public class test {
         Pet[] pets = new Pet[100]; //array to store pet data
         Scanner input = new Scanner(System.in);
 
-        // pets[0] = new Pet();
-        // pets[0].setName("Bubbles"); 
-        // pets[0].setSpecies(Species.DOG); 
+        pets[0] = new Pet();
+        pets[0].setName("Bubbles"); 
+        pets[0].setSpecies(Species.DOG); 
 
-        // pets[1] = new Pet();
-        // pets[1].setName("Drago");
-        // pets[1].setSpecies(Species.CAT);
+        pets[1] = new Pet();
+        pets[1].setName("Drago");
+        pets[1].setSpecies(Species.CAT);
 
-        // pets[2] = new Pet();
-        // pets[2].setName("Lemon");
-        // pets[2].setSpecies(Species.BIRD);
+        pets[2] = new Pet();
+        pets[2].setName("Lemon");
+        pets[2].setSpecies(Species.BIRD);
 
         OUTER:
         while (true) {

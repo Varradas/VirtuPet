@@ -1,9 +1,11 @@
+//Note before modifying: When this file is modified, the prior .ser file will no longer work.
+
 package virtupetClasses;
 
 import java.io.Serializable;
 import java.util.Random;
 
-public class Pet implements Serializable{
+public final class Pet implements Serializable{
     private Species species;
     private String name;
     private double emotional_value;
@@ -22,8 +24,8 @@ public class Pet implements Serializable{
         hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
         mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 40-60
         energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
-        // emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0; //needs testing, also needs enum Emotional Value
-
+        updateEmotionalState();
+        
         activity_multiplier = new Object[Activity.values().length][2];
         food_multiplier = new Object[Food.values().length][2];
 
@@ -69,27 +71,28 @@ public class Pet implements Serializable{
         
         for (Pet myPets : n) { 
             if (myPets == null) {
-                System.err.println("""
+                System.out.println("""
                                     \u001b[38;5;202m
                                     Finished Looping through available pets.\n\u001b[0m""");
                 break;
             }
-            System.err.println("\nName: " + myPets.name);
-            System.err.println("Species: " + myPets.species);
-            System.err.println("Emotional Value: " + myPets.emotional_value);
-            System.err.println("Hunger: " + myPets.hunger_level);
-            System.err.println("Mood: " + myPets.mood_level);
-            System.err.println("Energy: " + myPets.energy);
+            System.out.println("\nName: " + myPets.name);
+            System.out.println("Species: " + myPets.species);
+            System.out.println("Emotional Value: " + myPets.emotional_value);
+            System.out.println("Emotional Value: " + myPets.emotional_state);
+            System.out.println("Hunger: " + myPets.hunger_level);
+            System.out.println("Mood: " + myPets.mood_level);
+            System.out.println("Energy: " + myPets.energy);
 
-            System.err.println("Activity Multipliers: ");
+            System.out.println("Activity Multipliers: ");
             for (int i = 0; i < myPets.activity_multiplier.length; i++){
                 int x = i+1;
-                System.err.println("\nActivity " + x + ": " + myPets.activity_multiplier[i][1]);
+                System.out.println("\nActivity " + x + ": " + myPets.activity_multiplier[i][1]);
             }
-            System.err.println("Food Multipliers: ");
+            System.out.println("Food Multipliers: ");
             for (int i = 0; i < myPets.food_multiplier.length; i++){
                 int x = i+1;
-                System.err.println("\nFood " + x + ": " + myPets.food_multiplier[i][1]);
+                System.out.println("\nFood " + x + ": " + myPets.food_multiplier[i][1]);
             }
 
             

@@ -7,6 +7,7 @@ public enum Species {
    BIRD, 
    RABBIT, 
    HAMSTER, 
-   GUINEA_PIG;
+   GUINEA_PIG,
+   GECKO;
 
 }
