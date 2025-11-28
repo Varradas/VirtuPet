@@ -1,43 +1,14 @@
 package virtupetClasses;
 
-import java.io.Serializable;
+public enum Food{
+    CHICKEN(30f),
+    PEAS(20f),
+    FISH(14f);
 
-public class Food implements Serializable{
-    protected String name;
-    protected float value;
+    public final float foodValue;
 
-    public Food(){
-        name = "standard";
-        value = 1;
-    }
-
-    public void setFoodName(String n){
-        name = n;
-    }
-    public void setFoodValue(float n){
-        value = n;
-    }
-
-    public String getFoodName(){
-        return name;
-    }
-    public float getFoodValue(){
-        return value;
-    }
-
-    public void displayFoodDetails(Food[] n){
-        
-        for (Food foodInventory : n) { //move to Pet.java
-            if (foodInventory == null) {
-                System.err.println("""
-                                    \u001b[38;5;202m
-                                    Finished Looping through available food.\n\u001b[0m""");
-                break;
-            }
-            System.err.println("\nName of food: " + foodInventory.getFoodName());
-            System.err.println("Value: " + foodInventory.getFoodValue());
-        }
-        
+    Food (float foodValue){
+        this.foodValue = foodValue;
     }
 
 }

@@ -1,0 +1,28 @@
+Link: https://github.com/Nellousan/px2ansi
+
+
+Testing: 
+ cd "D:\OOP Final Project\files"
+ java test.java
+
+
+Using Windows Terminal:
+
+Converting PNG to ANSI: px2ansi "image_path" -o image_name.txt
+
+Printing the txt file: Get-Content image_name.txt -Encoding UTF8
+
+
+
+For Reliability, create a launcher script, terminal has some issues outputting UTF-8 as it might not be the default.
+
+run.ps1
+
+# Set encoding to UTF-8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
+# Run Java with UTF-8 encoding
+java -Dfile.encoding=UTF-8 -cp . YourJavaClass
+
+# Pause to see output
+Read-Host -Prompt "Press Enter to exit"
