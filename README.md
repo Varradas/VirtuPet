@@ -127,3 +127,9 @@ This project is created for **educational purposes** under the **Object-Oriented
 - Pet class still incomplete, will need to figure out how to implement the activity_multiplier and food_multiplier to vary each pet's favorite activities/food.
 - Need to figure out how to implement ENUMs that corresponds to the current emotional value level, maybe also for the Species that we'll determine to be available.
 
+**11/25/2025 - De Castro, Vinz Gabriel**
+- Activity class added, similar to the Food class but it will instead be used for all activities other than resting and eating. STC
+- Action class added, pretty much all methods involving the modification of pet data is done here, also moved the save/load methods to this file. Math for how each multiplier affects each action is still not final.
+- Pet Class is as good as done at this point, how the multipliers get constructed might get changed, since at the moment we'll have to manually add another element into the array whenever a new food/activity is added.
+- Still haven't done ENUMS, will have to work on that.
+
