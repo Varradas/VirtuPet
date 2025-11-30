@@ -45,7 +45,7 @@ public class Pet implements Serializable{
         }
     }
 
-    public final void updateEmotionalState(){
+    public void updateEmotionalState(){
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
