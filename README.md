@@ -144,4 +144,6 @@ This project is created for **educational purposes** under the **Object-Oriented
 - Overhauled Activity class(again). Made it so that each species will have their own sets of activities. Species got updated so that it can be used to refer to Activity enums as well so that it will be usable for the Pet constructor. SpeciesActivities is being used in order to properly assign the size of the Activity Array for the pet's multipliers inside the constructor since it does vary between species. ActivitySelection is there to aid in the selection process of each activity for each species, will still need testing to see if it's working properly but it's purpose is to shorten the code for the main file. Due to these changes the Action class and the Pet class has had some adjustments to accomodate the changes.
 - If all goes well that's done for all the needed logic, though we might update it more to implement ANSII art.
 - VirtuPet.java is being started. Menu methods are being made, so far only the creation of a new pet is confirmed working.
+- Still need to work on Inheritance for the Pet class, each species should have varying ranges for their multipliers and emotional changes.
+- updateEmotionalState method in Pet class still isn't finalized, will need balancing for each species.
 
