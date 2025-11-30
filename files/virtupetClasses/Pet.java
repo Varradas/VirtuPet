@@ -26,9 +26,9 @@ public class Pet implements Serializable{
         this.name = name;
         this.species = species;
 
-        hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
-        mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 40-60
-        energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
+        hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
+        mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
+        energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
         updateEmotionalState();
         
         activity_multiplier = new Object[activities.length][2];
@@ -45,7 +45,7 @@ public class Pet implements Serializable{
         }
     }
 
-    public void updateEmotionalState(){
+    public void updateEmotionalState(){ //Not final, needs to be overridden for each species
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
