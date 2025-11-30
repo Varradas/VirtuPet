@@ -12,9 +12,9 @@ public class test {
 
         Scanner input = new Scanner(System.in);
 
-        pets.add(new Pet("Bubbles", Species.DOG));
-        pets.add(new Pet("Drago", Species.CAT));
-        pets.add(new Pet("Lemon", Species.BIRD));
+        // pets.add(new Pet("Bubbles", Species.DOG));
+        // pets.add(new Pet("Drago", Species.CAT));
+        // pets.add(new Pet("Lemon", Species.BIRD));
 
         OUTER:
         while (true) {
@@ -59,10 +59,10 @@ public class test {
 
                     //Testing Activity Function
                     System.out.println("\nPlaying with " + pets.get(z).getPetName() + "...");
-                    System.out.println("Chosen Activity: " + Activity.WALK);
+                    System.out.println("Chosen Activity: " + Activity.Dog.FETCH);
                     System.out.println("Current Energy Level: " + pets.get(z).getEnergy());
                     System.out.println("Current Mood Level: " + pets.get(z).getMood());
-                    Action.Play(pets.get(z), Activity.WALK);
+                    Action.Play(pets.get(z), Activity.Dog.FETCH);
                     System.out.println("After Playing Energy Level: " + pets.get(z).getEnergy());
                     System.out.println("After Playing Mood Level: " + pets.get(z).getMood());
                 }
@@ -71,7 +71,7 @@ public class test {
                 }
                 case 5 -> {
                     if (!pets.isEmpty()){
-                        pets.get(0).displayAllPetDetails(pets);
+                        Action.displayAllPetDetails(pets);
                     } else {
                         System.err.println("""  
                                                 \u001b[38;5;196m
@@ -83,8 +83,13 @@ public class test {
                     for (Food food : Food.values()){
                         System.out.println(food + " = " + food.foodValue);
                     }
-                    for (Activity activity : Activity.values()){
-                        System.out.println(activity + " = " + activity.activityValue);
+
+                    for (Species species: Species.values()){
+                        System.out.println("Species: " + species);
+
+                        for (Activity.ActivityType activity : species.getActivities()){
+                            System.out.println(activity + " = " + activity.getActivityValue());
+                        }
                     }
                 }
                 default -> {

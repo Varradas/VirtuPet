@@ -3,10 +3,10 @@
 package virtupetClasses;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Random;
+import virtupetClasses.Activity.ActivityType;
 
-public final class Pet implements Serializable{
+public class Pet implements Serializable{
     private Species species;
     private String name;
     private double emotional_value;
@@ -17,9 +17,10 @@ public final class Pet implements Serializable{
     private final Object[][] activity_multiplier; //Bonuses/Penalties in each activity for each pet
     private final Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
 
-    public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level, 
+    public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level,
+        SpeciesActivitySelector speciesActivity = new SpeciesActivitySelector();
         Random random = new Random();
-        Activity[] activities = Activity.values();
+        Activity.ActivityType[] activities = (ActivityType[]) speciesActivity.getSpeciesActivities(species);
         Food[] food = Food.values();
 
         this.name = name;
@@ -30,8 +31,8 @@ public final class Pet implements Serializable{
         energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, lower limit is 1, random for each new instance from 70-100
         updateEmotionalState();
         
-        activity_multiplier = new Object[Activity.values().length][2];
-        food_multiplier = new Object[Food.values().length][2];
+        activity_multiplier = new Object[activities.length][2];
+        food_multiplier = new Object[food.length][2];
 
         for (int i = 0; i < activities.length; i++) {
             activity_multiplier[i][0] = activities[i];  // Activity name
@@ -44,7 +45,7 @@ public final class Pet implements Serializable{
         }
     }
 
-    public void updateEmotionalState(){
+    public final void updateEmotionalState(){
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
@@ -69,38 +70,6 @@ public final class Pet implements Serializable{
         }else if (emotional_value <= 10.0){
             emotional_state = EmotionalState.ECSTATIC;
         }
-    }
-
-    public void displayAllPetDetails(ArrayList<Pet> n){
-        
-        for (Pet myPets : n) { 
-            System.out.println("\nName: " + myPets.name);
-            System.out.println("Species: " + myPets.species);
-            System.out.println("Emotional Value: " + myPets.emotional_value);
-            System.out.println("Emotional Value: " + myPets.emotional_state);
-            System.out.println("Hunger: " + myPets.hunger_level);
-            System.out.println("Mood: " + myPets.mood_level);
-            System.out.println("Energy: " + myPets.energy);
-
-            System.out.println("Activity Multipliers: ");
-            for (int i = 0; i < myPets.activity_multiplier.length; i++){
-                int x = i+1;
-                System.out.println("\nActivity " + x + ": " + myPets.activity_multiplier[i][1]);
-            }
-            System.out.println("Food Multipliers: ");
-            for (int i = 0; i < myPets.food_multiplier.length; i++){
-                int x = i+1;
-                System.out.println("\nFood " + x + ": " + myPets.food_multiplier[i][1]);
-            }
-
-            
-        }
-        
-        System.out.println("""
-                            \u001b[38;5;202m
-            Finished Looping through available pets.\n
-                            \u001b[0m""");
-
     }
 
     public void setName(String n) {
@@ -134,6 +103,10 @@ public final class Pet implements Serializable{
         return emotional_state;
     }
 
+    public double getEmotionalValue(){
+        return emotional_value;
+    }
+
     public float getHunger() {
         return hunger_level;
     }
@@ -156,15 +129,15 @@ public final class Pet implements Serializable{
 
     //Getting Activity and their Multipliers, 0 for name, 1 for value
 
-    public String getActivityName(int n){
-        if (activity_multiplier[n][0] instanceof String activityName) {
+    public ActivityType getActivityName(int n){
+        if (activity_multiplier[n][0] instanceof Activity.ActivityType activityName) {
             return activityName;
         }
         throw new IllegalStateException("Expected String at index " + n);
     }
 
-    public String getFoodName(int n){
-        if (food_multiplier[n][0] instanceof String foodName) {
+    public Food getFoodName(int n){
+        if (food_multiplier[n][0] instanceof Food foodName) {
             return foodName;
         }
         throw new IllegalStateException("Expected String at index " + n);

@@ -39,32 +39,50 @@ public class Action{
         }
     }
 
-    public static Pet Play(Pet pet, Activity activity){ //Input is the chosen pet and activity.
+    public static Pet Play(Pet pet, Activity.ActivityType activity){ //Input is the chosen pet and activity.
         Object activityList[][] = pet.getActivityList();
         float activityMultiplier = 0;
 
         for (int i = 0; i < activityList.length; i++){
-            for (int j = 0; j < activityList[i].length; j++){
-                if (activityList[i][j] instanceof Activity currentItem && currentItem == activity) {
-                    activityMultiplier = pet.getActivityMultiplier(i);
+            for (int j = 0; j < activityList[i].length; j++){ //Loops through the list of the Pet's Activities
+
+                Object currentItem = activityList[i][j]; //Assigns current item to a temporary object
+
+                if (currentItem instanceof Activity.ActivityType) { //Checks if the current item is an Activity.ActivityType
+                    Activity.ActivityType currentActivity = (Activity.ActivityType) currentItem; //If so then we cast that object to an Activity.ActivityType
+                    if (currentActivity.equals(activity)) { //Then check if that item is equal to the activitytype chosen, if so get the appropriate multiplier.
+                        activityMultiplier = pet.getActivityMultiplier(i);
+                    }
                 }
             }   
         }
 
-        float energy_consumption = ((1/(pet.getMood()+pet.getHunger()))*100)+(Math.abs(activity.activityValue)*(pet.getEnergy()/100)*0.5f);
-        float play_value = activity.activityValue * (activityMultiplier/100);
-        if ((play_value + pet.getMood()) >= 100) {
+        float energy_consumption = ((1/(pet.getMood()+pet.getHunger()))*100)+(Math.abs(activity.getActivityValue())*(pet.getEnergy()/100)*0.5f);
+        float play_value = activity.getActivityValue() * (activityMultiplier/100);
+
+        if ((play_value + pet.getMood()) >= 100) { //Takes into account if Mood goes beyond 100 or below 1
             pet.setMood(100.0f);
-            pet.setEnergy(pet.getEnergy() - energy_consumption);
-            pet.updateEmotionalState();
-            return pet;
-        }
-        else {
+        }else if ((play_value + pet.getMood()) <= 1) {
+            pet.setMood(1.0f);
+        }else {
             pet.setMood(pet.getMood() + play_value);
-            pet.setEnergy(pet.getEnergy() - energy_consumption);
-            pet.updateEmotionalState();
-            return pet;
         }
+
+        if ((pet.getHunger() - (energy_consumption/2)) <= 1){ //Hunger gets reduced by half of energy_consumption
+            pet.setHunger(1.0f);
+        }else {
+             pet.setHunger(pet.getHunger() - (energy_consumption/2));
+        }
+
+        if ((pet.getEnergy() - (energy_consumption)) <= 1){ //Energy gets reduced by energy_consumption
+            pet.setEnergy(1.0f);
+        }else {
+             pet.setEnergy(pet.getEnergy() - (energy_consumption));
+        }
+
+        pet.updateEmotionalState();
+        return pet;
+
     }
 
     public static Pet Rest(Pet pet){ //Input is chosen Pet
@@ -117,8 +135,8 @@ public class Action{
         }
     }
 
-    public static void runIdleAnimation(Pet pet){
-        for (int i = 0; i < 10; i++){
+    public static void runIdleAnimation(Pet pet){ //Work in Progress
+        for (int i = 0; i < 2; i++){
                 System.out.println("\u001b[2J");
             Action.printSprite(pet.getSpecies(), 1);
             Action.delay(190);
@@ -132,6 +150,36 @@ public class Action{
             Action.printSprite(pet.getSpecies(), 4);
             Action.delay(190);
         }
+    }
+
+    public static void displayAllPetDetails(ArrayList<Pet> n){
+        
+        for (Pet myPets : n) { 
+            System.out.println("\nName: " + myPets.getPetName());
+            System.out.println("Species: " + myPets.getSpecies());
+            System.out.println("Emotional State: " + myPets.getEmotionalState());
+            System.out.println("Emotional Value: " + myPets.getEmotionalValue());
+            System.out.println("Hunger: " + myPets.getHunger());
+            System.out.println("Mood: " + myPets.getMood());
+            System.out.println("Energy: " + myPets.getEnergy());
+
+            System.out.println("Activity Multipliers: ");
+            for (int i = 0; i < myPets.getActivityList().length; i++){
+                int x = i+1;
+                System.out.println("\n" + myPets.getActivityName(i) + " " + x + ": " + myPets.getActivityMultiplier(i));
+            }
+            System.out.println("Food Multipliers: ");
+            for (int i = 0; i < myPets.getFoodInventory().length; i++){
+                int x = i+1;
+                System.out.println("\n" + myPets.getFoodName(i) + " " + x + ": " + myPets.getFoodMultiplier(i));
+            }
+        }
+        
+        System.out.println("""
+                            \u001b[38;5;202m
+            Finished Looping through available pets.\n
+                            \u001b[0m""");
+
     }
 
     public static ArrayList<Pet> loadPetData(ArrayList<Pet> pets){     
