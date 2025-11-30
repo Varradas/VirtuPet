@@ -1,6 +1,6 @@
 package virtupetClasses;
 
-public class SpeciesActivitySelector {
+public class SpeciesActivities {
     
     public enum speciesSelector{
 

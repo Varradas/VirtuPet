@@ -18,7 +18,7 @@ public class Pet implements Serializable{
     private final Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
 
     public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level,
-        SpeciesActivitySelector speciesActivity = new SpeciesActivitySelector();
+        SpeciesActivities speciesActivity = new SpeciesActivities();
         Random random = new Random();
         Activity.ActivityType[] activities = (ActivityType[]) speciesActivity.getSpeciesActivities(species);
         Food[] food = Food.values();
