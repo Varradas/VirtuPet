@@ -3,19 +3,20 @@
 package virtupetClasses;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 import virtupetClasses.Activity.ActivityType;
 
 public class Pet implements Serializable{
     private Species species;
-    private String name;
-    private double emotional_value;
-    private EmotionalState emotional_state;
-    private float hunger_level;
-    private float mood_level;
-    private float energy;
-    private final Object[][] activity_multiplier; //Bonuses/Penalties in each activity for each pet
-    private final Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
+    protected String name;
+    protected double emotional_value;
+    protected EmotionalState emotional_state;
+    protected float hunger_level;
+    protected float mood_level;
+    protected float energy;
+    protected Object[][] activity_multiplier; //Bonuses/Penalties in each activity for each pet
+    protected Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
 
     public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level,
         SpeciesActivities speciesActivity = new SpeciesActivities();
@@ -26,13 +27,13 @@ public class Pet implements Serializable{
         this.name = name;
         this.species = species;
 
-        hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
-        mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
-        energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
-        updateEmotionalState();
+        this.hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
+        this.mood_level = Math.round(random.nextFloat(40,61)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
+        this.energy = Math.round(random.nextFloat(70,101)  * 10) / 10.0f; //Upper limit is 100, needs to be overridden for each species
+        //updateEmotionalState(); Call this inside the subclass instead
         
-        activity_multiplier = new Object[activities.length][2];
-        food_multiplier = new Object[food.length][2];
+        this.activity_multiplier = new Object[activities.length][2];
+        this.food_multiplier = new Object[food.length][2];
 
         for (int i = 0; i < activities.length; i++) {
             activity_multiplier[i][0] = activities[i];  // Activity name
@@ -46,6 +47,7 @@ public class Pet implements Serializable{
     }
 
     public void updateEmotionalState(){ //Not final, needs to be overridden for each species
+        // emotional_value = Math.round(((((energy/35)+(hunger_level/10.8))/3) + (mood_level/16.7)) * 10.0)/10.0;
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
@@ -62,14 +64,30 @@ public class Pet implements Serializable{
         }else if (emotional_value <= 5.4){
             emotional_state = EmotionalState.INDIFFERENT;
         }else if (emotional_value <= 6.4){
-            emotional_state = EmotionalState.INTERESTED;
-        }else if (emotional_value <= 7.4){
             emotional_state = EmotionalState.CONTENT;
+        }else if (emotional_value <= 7.4){
+            emotional_state = EmotionalState.INTERESTED;
         }else if (emotional_value <= 8.9){
             emotional_state = EmotionalState.HAPPY;
-        }else if (emotional_value <= 10.0){
+        }else if (emotional_value <= 9.7){
             emotional_state = EmotionalState.ECSTATIC;
         }
+    }
+
+    public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){
+        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 0.3f;
+        energy = Math.round((energy-energyDecayRate) * 10.0f)/10.0f;
+
+        float hungerDecayRate = 0.5f +((100-energy)/100) * 1f;
+        hunger_level = Math.round((hunger_level-hungerDecayRate) * 10.0f)/10.0f;
+
+        float moodDecayRate = 0.5f + ((100-energy)/100) * 0.3f;
+        mood_level = Math.round((mood_level-moodDecayRate) * 10.0f)/10.0f;
+
+        if(energy <= 0 && hunger_level <= 0 && mood_level <= 0){
+            Action.triggerDeath(mypets, pet);
+        }
+
     }
 
     public void setName(String n) {

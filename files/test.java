@@ -12,9 +12,8 @@ public class test {
 
         Scanner input = new Scanner(System.in);
 
-        // pets.add(new Pet("Bubbles", Species.DOG));
-        // pets.add(new Pet("Drago", Species.CAT));
-        // pets.add(new Pet("Lemon", Species.BIRD));
+        pets.add(new Dog("Bubbles", Species.DOG));
+        pets.add(new Cat("Mia", Species.CAT));
 
         OUTER:
         while (true) {
@@ -72,6 +71,9 @@ public class test {
                 case 5 -> {
                     if (!pets.isEmpty()){
                         Action.displayAllPetDetails(pets);
+                        // for (Pet pet: pets){
+                        //     System.out.println(pet.getPetName());
+                        // }
                     } else {
                         System.err.println("""  
                                                 \u001b[38;5;196m
@@ -91,6 +93,9 @@ public class test {
                             System.out.println(activity + " = " + activity.getActivityValue());
                         }
                     }
+                }
+                case 7 -> {
+                    Action.triggerDeath(pets, pets.get(1));
                 }
                 default -> {
                     System.out.println("\nInvalid input. Please try again.\n");

@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class Action{
 
-    public static Pet Eat(Pet pet, Food food){ //Input is the chosen pet and food.
+    public static void Eat(Pet pet, Food food){ //Input is the chosen pet and food.
         Object foodInventory[][] = pet.getFoodInventory();
         float foodMultiplier = 0;
 
@@ -28,18 +28,37 @@ public class Action{
 
         float food_value = food.foodValue * (foodMultiplier/100);
         if ((food_value + pet.getHunger()) >= 100) {
+            food_value = Math.round(((100+food_value)-(pet.getHunger()+food_value))* 10) / 10.0f;
             pet.setHunger(100.0f);
             pet.updateEmotionalState();
-            return pet;
         }
         else {
             pet.setHunger(pet.getHunger() + food_value);
             pet.updateEmotionalState();
-            return pet;
         }
+
+        String msg1 = "Feeding " + pet.getPetName() + " " + food.name() + "...";
+        String msg2 = "Hunger " + "+" + food_value;
+
+        for (char c: msg1.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+
+        Action.delay(2000);
+
+        Action.runIdleAnimation(pet);
+
+        for (char c: msg2.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+
+        Action.delay(2000);  
+
     }
 
-    public static Pet Play(Pet pet, Activity.ActivityType activity){ //Input is the chosen pet and activity.
+    public static void Play(Pet pet, Activity.ActivityType activity){ //Input is the chosen pet and activity.
         Object activityList[][] = pet.getActivityList();
         float activityMultiplier = 0;
 
@@ -81,29 +100,72 @@ public class Action{
         }
 
         pet.updateEmotionalState();
-        return pet;
+        String sign = "";
+        if (play_value > 0){
+            sign = "+";
+        }else if (play_value < 0){
+            sign = "-";
+        }else {
+            sign = "";
+        }
+
+        String msg1 = pet.getPetName() + " Is Doing Activity: " + activity;
+        String msg2 = "Mood " + sign + Math.abs(Math.round(play_value  * 10)) / 10.0f;
+        String msg3 = "Hunger " + "-" + Math.round((energy_consumption/2)  * 10) / 10.0f;
+        String msg4 = "Energy " + "-" + Math.round(energy_consumption  * 10) / 10.0f;
+
+        for (char c: msg1.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+
+        Action.delay(2000);
+
+        Action.runIdleAnimation(pet);
+
+        for (char c: msg2.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+        System.out.print("\n");
+        for (char c: msg3.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+        System.out.print("\n");
+        for (char c: msg4.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+
+        Action.delay(2000);
 
     }
 
-    public static Pet Rest(Pet pet){ //Input is chosen Pet
+    public static void Rest(Pet pet){ //Input is chosen Pet
         int restRng = new Random().nextInt(10);
         int rest_value;
+        int mood_value;
 
         if (restRng < 7){ //70% chance, standard energy value
             rest_value = 30;
+            mood_value = 0;
         }
         else if (restRng < 9){ // 20% chance, greater energy value
             rest_value = 50;
+            mood_value = 5;
             pet.setMood(pet.getMood() + 5);
         }
         else { // 10% chance, either greatest energy value or lower energy value
             int chance = new Random().nextInt(10);
             if (chance < 5) { // 50% chance of greatest energy value
                 rest_value = 80;
+                mood_value = 10;
                 pet.setMood(pet.getMood() + 10);
             }
             else { // 50% chance of lower energy value
                 rest_value = 10;
+                mood_value = -10;
                 pet.setMood(pet.getMood() - 10);
             }
         }
@@ -113,14 +175,70 @@ public class Action{
         }
         
         if ((rest_value + pet.getEnergy()) >= 100) {
+            rest_value = (int) (Math.round(((100+rest_value)-(pet.getEnergy()+rest_value))* 10) / 10.0f);
             pet.setEnergy(100);
             pet.updateEmotionalState();
-            return pet;
         }
         else {
             pet.setEnergy(pet.getEnergy() + rest_value);
             pet.updateEmotionalState();
-            return pet;
+        }
+
+        String sign = "";
+        if (mood_value > 0){
+            sign = "+";
+        }else if (mood_value < 0){
+            sign = "-";
+        }else {
+            sign = "+";
+        }
+
+        String msg1 = pet.getPetName() + " Is Resting...";
+        String msg2 = "Energy +" + Math.round(rest_value  * 10) / 10.0f;
+        String msg3 = "Mood " + sign + Math.abs(mood_value);
+
+        for (char c: msg1.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+        Action.delay(2000);
+        Action.runIdleAnimation(pet);
+        System.out.println("\n");
+        for (char c: msg2.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+        System.out.println("\n");
+        for (char c: msg3.toCharArray()){
+            System.out.print(c);
+            Action.delay(100);
+        }
+        
+        Action.delay(2000);
+    }
+
+    public static void triggerDeath(ArrayList<Pet> pets, Pet petToDie) {
+        String msg1 = "You've Neglected " + petToDie.getPetName() + "...";
+        String msg2 = petToDie.getPetName() + " is in a better place now.";
+        for (Pet mypets : pets){
+            if (mypets == petToDie){
+                
+                for (char c: msg1.toCharArray()){
+                    System.out.print(c);
+                    Action.delay(100);
+                }
+                Action.delay(2000);
+
+                Action.printSprite(petToDie.getSpecies(), -1);
+                
+                for (char c: msg2.toCharArray()){
+                    System.out.print(c);
+                    Action.delay(100);
+                }
+                pets.remove(petToDie);
+                Action.delay(3000);
+                break;
+            }
         }
     }
 
@@ -148,6 +266,9 @@ public class Action{
             Action.delay(190);
                 System.out.println("\u001b[2J");
             Action.printSprite(pet.getSpecies(), 4);
+            Action.delay(190);
+            System.out.println("\u001b[2J");
+            Action.printSprite(pet.getSpecies(), 1);
             Action.delay(190);
         }
     }
