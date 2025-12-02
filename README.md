@@ -147,3 +147,6 @@ This project is created for **educational purposes** under the **Object-Oriented
 - Still need to work on Inheritance for the Pet class, each species should have varying ranges for their multipliers and emotional changes.
 - updateEmotionalState method in Pet class still isn't finalized, will need balancing for each species.
 
+**12/2/2025**
+- Finished Finalizing most of everything. Pet.java is now an abstract class, so we got the seperate subclasses to adjust their constructors and the updateEmotionalState() and updateStatsWhenTimePass() methods for each species.
+- Implemented sfx when doing an input and background music. Sprites remain only one animation for each species, also implemented icons for each species and a death sprite (They can die if all stats go down to zero now).
