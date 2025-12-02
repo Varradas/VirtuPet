@@ -26,8 +26,7 @@ All pet data, including activity multipliers and food effectiveness, are stored 
 │   ├── 📂 BIRD/
 │   ├── 📂 CAT/
 │   ├── 📂 DOG/
-│   ├── 📂 RABBIT/
-│   └── 📄 dog1.txt
+│   └── 📂 RABBIT/
 ├── 📂 virtupetClasses/
 │   ├── ☕ Action.java
 │   ├── ☕ Activity.java
