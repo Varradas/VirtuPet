@@ -47,7 +47,7 @@ All pet data, including activity multipliers and food effectiveness, are stored 
 ---
 
 ## How to Run the Program
-Ensure your using the latest version of Windows Terminal and run the comman below to set the active code page to UTF-8.
+Ensure your using the latest version of Windows Terminal and run the command below to set the active code page to UTF-8. This is so that the sprites will load properly.
 ```
 chcp 65001
 ```
