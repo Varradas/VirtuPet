@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import virtupetClasses.*;
 import virtupetClasses.Activity.ActivityType;
+import virtupetClasses.PetSubclasses.*;
 
 public class VirtuPet {
     private static final Scanner input = new Scanner(System.in);
@@ -32,13 +33,13 @@ public class VirtuPet {
     public static void displayMainMenu(ArrayList<Pet> pet) throws IOException{
         while(true){
             System.out.println("\u001b[1J");
-            System.out.println("\nWelcome to VirtuPet");
-            System.out.println("\nAvailable Actions:");
-            System.out.println("[1] View My Pets");
-            System.out.println("[2] Adopt a New Pet");
-            System.out.println("[3] Raise Your Pets");
-            System.out.println("[4] Help");
-            System.out.println("[0] Exit Program");
+            System.out.println("\n\t *══ Welcome to VirtuPet ══*");
+            System.out.println("\n\t     Available Actions:");
+            System.out.println("\t     [1] View My Pets");
+            System.out.println("\t     [2] Adopt a New Pet");
+            System.out.println("\t     [3] Raise Your Pets");
+            System.out.println("\t     [4] Guide");
+            System.out.println("\t     [0] Exit Program");
             System.out.print("\nAction: ");
 
             try {
@@ -69,12 +70,48 @@ public class VirtuPet {
     public static void displayHelpMenu(){ //Unfinished
         while (true) {
 
-            System.out.println();
+            System.out.println("\n\t\t\t\t\t\t════════ Guide Menu ════════");
 
+            System.err.println("""
+
+                Hello!
+                
+                Welcome to VirtuPet, a simple game simulating caretaking of a variety of different pets, each with their own temperaments.
+
+                That last part is the important part, in this game, EVERY pet will behave differently from other pets, even from their own species!
+                Some pets will love every kind of food you give them, some will just hate one specific activity, or love only one activity!
+                If your unlucky, you might get a pet that hates everything! You might consider unadopting them at that point...
+
+                --Basic Controls--
+
+                Input instructions are found inside brackets [], type the corresponding character inside the bracket and press enter to navigate.
+                When selecting a pet to start care for, type their corresponding number found under their icon, it's hard to miss!
+
+                --Tips--
+
+                Resting for every pet is RNG, and depending on how good your luck is, your pet might get a big energy boost with mood on top! Or maybe get barely any
+                energy and lose some mood...
+
+                Feeding a pet will always improve their hunger, so it's the safest action to give them! 
+
+                Doing any Activity decreases both hunger and energy, meanwhile their mood can either go up or down if they like an activity or not, take note of this,
+                as their preferences won't change!
+
+                You might want to be careful having many pets, as when you take care of one pet, the others' stats will go down exponentially, meaning
+                the lower it gets, the faster the rate it goes down when you dont give them any love!
+
+                If you do neglect a pet to the point that all their stats fall to zero, they'll die. So be careful!
+
+
+
+                That's it! Enjoy Playing!
+
+            """);
+
+            System.out.print("\n[0] Go Back: ");
             try {
                 int choice = input.nextInt();
                 switch (choice){
-                    case 1 -> {}
                     case 0 -> {Action.playAudio("back"); return;}
                     default -> throw new IllegalArgumentException("Invalid choice");
                 }

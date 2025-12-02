@@ -1,22 +1,26 @@
-package virtupetClasses;
+package virtupetClasses.PetSubclasses;
 
 import java.util.ArrayList;
 import java.util.Random;
+import virtupetClasses.Action;
+import virtupetClasses.EmotionalState;
+import virtupetClasses.Pet;
+import virtupetClasses.Species;
 
-public final class Dog extends Pet{
+public final class Cat extends Pet{
 
-    public Dog(String name, Species species) {
+    public Cat(String name, Species species) {
         super(name, species);
         Random random = new Random();
-        this.hunger_level = Math.round(random.nextFloat(70,101) * 10) / 10.0f; //70-100
-        this.mood_level = Math.round(random.nextFloat(60,71)  * 10) / 10.0f; //60-71
-        this.energy = Math.round(random.nextFloat(80,101)  * 10) / 10.0f; //80-101
+        this.hunger_level = Math.round(random.nextFloat(90,101) * 10) / 10.0f; //90-100
+        this.mood_level = Math.round(random.nextFloat(50,61)  * 10) / 10.0f; //50-61
+        this.energy = Math.round(random.nextFloat(50,71)  * 10) / 10.0f; //50-71
         updateEmotionalState();
     }
 
     @Override
     public void updateEmotionalState(){ //Not final, needs to be overridden for each species
-        emotional_value = Math.round(((((energy/35)+(hunger_level/10.8))/3) + (mood_level/16.7)) * 10.0)/10.0;
+        emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
         }else if (emotional_value >= 10.0f){
@@ -41,16 +45,16 @@ public final class Dog extends Pet{
             emotional_state = EmotionalState.ECSTATIC;
         }
     }
-    
+
     @Override
     public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){
         float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 10.0f;
         energy = Math.round((energy-energyDecayRate) * 10.0f)/10.0f;
 
-        float hungerDecayRate = 0.5f +((100-energy)/100) * 1.0f;
+        float hungerDecayRate = 0.5f +((100-energy)/100) * 0.5f;
         hunger_level = Math.round((hunger_level-hungerDecayRate) * 10.0f)/10.0f;
 
-        float moodDecayRate = 0.5f + ((100-energy)/100) * 0.5f;
+        float moodDecayRate = 0.5f + ((100-energy)/100) * 1.0f;
         mood_level = Math.round((mood_level-moodDecayRate) * 10.0f)/10.0f;
 
         if (energy < 0){
@@ -70,4 +74,5 @@ public final class Dog extends Pet{
         }
 
     }
+    
 }

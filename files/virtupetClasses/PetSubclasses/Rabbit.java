@@ -1,14 +1,18 @@
-package virtupetClasses;
+package virtupetClasses.PetSubclasses;
 
 import java.util.ArrayList;
 import java.util.Random;
+import virtupetClasses.Action;
+import virtupetClasses.EmotionalState;
+import virtupetClasses.Pet;
+import virtupetClasses.Species;
 
-public final class Bird extends Pet{
+public final class Rabbit extends Pet{
 
-    public Bird(String name, Species species) {
+    public Rabbit(String name, Species species) {
         super(name, species);
         Random random = new Random();
-        this.hunger_level = Math.round(random.nextFloat(30,60) * 10) / 10.0f; //30-60
+        this.hunger_level = Math.round(random.nextFloat(30,50) * 10) / 10.0f; //30-60
         this.mood_level = Math.round(random.nextFloat(40,55)  * 10) / 10.0f; //40-55
         this.energy = Math.round(random.nextFloat(80,90)  * 10) / 10.0f; //80-90
         updateEmotionalState();
@@ -16,7 +20,7 @@ public final class Bird extends Pet{
 
     @Override
     public void updateEmotionalState(){ //Not final, needs to be overridden for each species
-        emotional_value = Math.round(((((energy/8.2)+(hunger_level/35))/3) + (mood_level/20)) * 10.0)/10.0;
+        emotional_value = Math.round(((((energy/35)+(hunger_level/8.2))/3) + (mood_level/20)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
         }else if (emotional_value >= 10.0f){
@@ -44,13 +48,13 @@ public final class Bird extends Pet{
 
     @Override
     public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){
-        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 1f;
+        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 1.0f;
         energy = Math.round((energy-energyDecayRate) * 10.0f)/10.0f;
 
-        float hungerDecayRate = 0.5f +((100-energy)/100) * 0.5f;
+        float hungerDecayRate = 0.5f +((100-energy)/100) * 10.0f;
         hunger_level = Math.round((hunger_level-hungerDecayRate) * 10.0f)/10.0f;
 
-        float moodDecayRate = 0.5f + ((100-energy)/100) * 10.0f;
+        float moodDecayRate = 0.5f + ((100-energy)/100) * 0.5f;
         mood_level = Math.round((mood_level-moodDecayRate) * 10.0f)/10.0f;
 
         if (energy < 0){
