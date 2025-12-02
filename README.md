@@ -50,11 +50,11 @@ All pet data, including activity multipliers and food effectiveness, are stored 
 ## How to Run the Program
 Open your terminal in the `files/` folder and run:
 ```
-javac virtupetClasses/*.java
+javac *.java
 ```
 Run the program using:
 ```
-java virtupetClasses.Main
+java 
 ```
 
 ---
