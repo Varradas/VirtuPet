@@ -18,7 +18,7 @@ public class VirtuPet {
         Action.loadPetData(pet);
         Action.delay(2000);
         pet = Action.loadPetData(pet);
-
+        Action.playAudio("bgMusic", true);
         while (true) { 
             try (input) {
                 displayMainMenu(pet);
@@ -37,6 +37,7 @@ public class VirtuPet {
             System.out.println("[1] View My Pets");
             System.out.println("[2] Adopt a New Pet");
             System.out.println("[3] Raise Your Pets");
+            System.out.println("[4] Help");
             System.out.println("[0] Exit Program");
             System.out.print("\nAction: ");
 
@@ -45,15 +46,36 @@ public class VirtuPet {
                 switch (choice){
                     case 1 ->  {
                         if (pet.isEmpty()){
+                            Action.playAudio("error");
                             System.out.println("You Have No Pets to View! Get Yourself Some New Pets!");
                             Action.delay(2000);
                         }else {
+                            Action.playAudio("select");
                             displayMyPets(pet); //done
                         }
                     }
-                    case 2 -> displayNewPetMenu(pet); //Needs Testing
-                    case 3 -> displayPetCareMenu(pet); //Not Finished
-                    case 0 -> {return;}
+                    case 2 -> {Action.playAudio("select"); displayNewPetMenu(pet);} //Needs Testing
+                    case 3 -> {Action.playAudio("select"); displayPetCareMenu(pet);} //Not Finished
+                    case 4 -> {Action.playAudio("select"); displayHelpMenu();} //todo
+                    case 0 -> {Action.playAudio("back"); Action.delay(500);return;}
+                    default -> throw new IllegalArgumentException("Invalid choice");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    public static void displayHelpMenu(){ //Unfinished
+        while (true) {
+
+            System.out.println();
+
+            try {
+                int choice = input.nextInt();
+                switch (choice){
+                    case 1 -> {}
+                    case 0 -> {Action.playAudio("back"); return;}
                     default -> throw new IllegalArgumentException("Invalid choice");
                 }
             } catch (IllegalArgumentException e) {
@@ -85,8 +107,10 @@ public class VirtuPet {
                 int choice = input.nextInt();
                 switch (choice){
                     case 1 -> {
+                        Action.playAudio("select");
                         System.out.print("Choose Pet to Unadopt [Select Their Number]: ");
                         int petToUnadopt = input.nextInt();
+                        Action.playAudio("select");
                         String msg1 = "Goodbye, " + pet.get(petToUnadopt-1).getPetName() + "...";
                         System.out.println("\n");
 
@@ -96,9 +120,10 @@ public class VirtuPet {
                         }
 
                         Action.delay(3000);
-                        pet.remove(petToUnadopt-1); 
+                        pet.remove(petToUnadopt-1);
+                        return;
                     }
-                    case 0 -> {return;}
+                    case 0 -> {Action.playAudio("back"); return;}
                     default -> throw new IllegalArgumentException("Invalid choice");
 
                 }
@@ -121,28 +146,33 @@ public class VirtuPet {
                 System.out.print("Species of Pet [0 To Cancel]: ");
                 int choice = input.nextInt();
                 if (choice == 0){
+                    Action.playAudio("back");
                     return;
                 }else if (choice > x || choice < 0){
+                    Action.playAudio("error");
                     System.out.print("""  
                                                 \u001b[38;5;196m
                                 \nInvalid Choice. \u001b[0m""" );
                     Action.delay(2000);
                     return;
                 }
+                Action.playAudio("select");
                 input.nextLine();
                 System.out.print("Name of Your Pet [0 To Cancel]: ");
                 String name = input.nextLine();
+                if ("0".equals(name)){
+                    Action.playAudio("back"); return;
+                }
+                Action.playAudio("select");
 
                 switch (choice){
-                    case 0 -> {return;}
                     case 1 -> {pet.add(new Dog(name, Species.DOG)); }
                     case 2 -> {pet.add(new Cat(name, Species.CAT)); }
-                    case 3 -> {pet.add(new Pet(name, Species.BIRD)); }
-                    case 4 -> {pet.add(new Pet(name, Species.RABBIT)); } 
-                    case 5 -> {pet.add(new Pet(name, Species.HAMSTER)); }
-                    case 6 -> {pet.add(new Pet(name, Species.GUINEA_PIG)); }
-                    case 7 -> {pet.add(new Pet(name, Species.GECKO)); }
-                    default -> {System.out.print("""  
+                    case 3 -> {pet.add(new Bird(name, Species.BIRD)); }
+                    case 4 -> {pet.add(new Rabbit(name, Species.RABBIT)); }
+                    case 0 -> {Action.playAudio("back"); return;}
+                    default -> {Action.playAudio("error");
+                                System.out.print("""  
                                                 \u001b[38;5;196m
                                 \nInvalid Choice. \u001b[0m""" );
                                 Action.delay(2000); throw new IllegalArgumentException();}
@@ -150,16 +180,16 @@ public class VirtuPet {
 
                 Action.runIdleAnimation(pet.get(pet.size()-1));
                 String msg1 = "Congratualtions on Your New Pet!";
-                String msg2 = "Welcome " + pet.get(pet.size()-1).getPetName() + "!";
+                String msg2 = "\tWelcome " + pet.get(pet.size()-1).getPetName() + "!";
 
                 for (char c: msg1.toCharArray()){
                     System.out.print(c);
-                    Action.delay(100);
+                    Action.delay(50);
                 }
                 System.out.println("\n");
                 for (char c: msg2.toCharArray()){
                     System.out.print(c);
-                    Action.delay(100);
+                    Action.delay(50);
                 }
 
                 Action.delay(3000);
@@ -173,6 +203,12 @@ public class VirtuPet {
 
     public static void displayPetCareMenu(ArrayList<Pet> pet){
         while (true) {
+            if (pet.isEmpty()){
+                Action.playAudio("error");
+                System.out.println("You Have No Pets to View! Get Yourself Some New Pets!");
+                Action.delay(2000);
+                return;
+            }
             System.out.println("\u001b[1J");
             int x = 0;
             System.out.println("Choose One of Your Pets to Care For: \n");
@@ -191,15 +227,17 @@ public class VirtuPet {
                 int choice = input.nextInt();
                 
                 if (choice <= 0){
+                    Action.playAudio("back");
                     return;
                 }else if (choice-1 >= pet.size()){
+                    Action.playAudio("error");
                     System.out.print("""  
                                                 \u001b[38;5;196m
                                 \nInvalid Choice, Please Try Again.  \u001b[0m""");
                     Action.delay(3000); 
                     continue;
                 }
-
+                Action.playAudio("select");
                 Pet chosenPet = pet.get(choice-1);
                 displayActionMenu(chosenPet, pet);
 
@@ -227,16 +265,18 @@ public class VirtuPet {
             try {
                 int choice = input.nextInt();
                 switch (choice){
-                    case 1 -> {Action.Rest(pet);
+                    case 1 -> {
+                        Action.playAudio("select");
+                        Action.Rest(pet);
                         for (Pet pets: myPets){
                             if (pets != pet){
                                 pets.updateStatsWhenTimePass(myPets, pets);
                             }
                         }
                     }
-                    case 2 -> displayFeedMenu(myPets, pet);
-                    case 3 -> displayActivityMenu(myPets, pet);
-                    case 0 -> {return;}
+                    case 2 -> {Action.playAudio("select"); displayFeedMenu(myPets, pet);}
+                    case 3 -> {Action.playAudio("select"); displayActivityMenu(myPets, pet);}
+                   case 0 -> {Action.playAudio("back"); return;}
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -251,16 +291,20 @@ public class VirtuPet {
             int x = 0;
             for (Food food : Food.values()){
                 x++;
-                System.out.println("["+ x + "] " + food + " \t " + "Base Value: "+ food.foodValue);
+                System.out.println("["+ x + "] " + food);
             }
             System.out.print("\nChoose Food to Feed " + pet.getPetName() + "[0 To Go Back]: ");
             try {
                 int choice = input.nextInt();
                 switch (choice){
-                    case 1 -> Action.Eat(pet, Food.CHICKEN);
-                    case 2 -> Action.Eat(pet, Food.PEAS);
-                    case 3 -> Action.Eat(pet, Food.FISH);
-                    case 0 -> {return;}
+                    case 1 -> {Action.playAudio("select"); Action.Eat(pet, Food.PET_KIBBLE);}
+                    case 2 -> {Action.playAudio("select"); Action.Eat(pet, Food.VEGETABLE);}
+                    case 3 -> {Action.playAudio("select"); Action.Eat(pet, Food.FRUIT);}
+                    case 4 -> {Action.playAudio("select"); Action.Eat(pet, Food.TREAT);}
+                    case 5 -> {Action.playAudio("select"); Action.Eat(pet, Food.FISH);}
+                    case 6 -> {Action.playAudio("select"); Action.Eat(pet, Food.MEAT);}
+                    case 7 -> {Action.playAudio("select"); Action.Eat(pet, Food.CHICKEN);}
+                    case 0 -> {Action.playAudio("back"); return;}
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
@@ -284,11 +328,12 @@ public class VirtuPet {
                 int choice = input.nextInt();
 
                 if (choice == 0){
+                    Action.playAudio("back");
                     return;
                 }
             
                 ActivityType activity = ActivitySelection.getActivityByNumber(pet.getSpecies().name(), choice);
-                
+                Action.playAudio("select");
                 Action.Play(pet, activity);
 
                 for (Pet pets: myPets){

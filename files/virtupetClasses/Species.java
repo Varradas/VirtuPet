@@ -5,10 +5,7 @@ public enum Species {
     DOG(Activity.Dog.class), 
     CAT(Activity.Cat.class), 
     BIRD(Activity.Bird.class), 
-    RABBIT(Activity.Rabbit.class), 
-    HAMSTER(Activity.Hamster.class), 
-    GUINEA_PIG(Activity.GuineaPig.class),
-    GECKO(Activity.Gecko.class);
+    RABBIT(Activity.Rabbit.class); 
 
     private final Class<? extends Activity.ActivityType> activityClass;
     

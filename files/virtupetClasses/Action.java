@@ -1,5 +1,6 @@
 package virtupetClasses;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.sound.sampled.*;
 
 public class Action{
 
@@ -38,7 +40,7 @@ public class Action{
         }
 
         String msg1 = "Feeding " + pet.getPetName() + " " + food.name() + "...";
-        String msg2 = "Hunger " + "+" + food_value;
+        String msg2 = "Hunger " + "+" + Math.round(food_value*10) /10.0;
 
         for (char c: msg1.toCharArray()){
             System.out.print(c);
@@ -49,6 +51,7 @@ public class Action{
 
         Action.runIdleAnimation(pet);
 
+        Action.playAudio("statUp");
         for (char c: msg2.toCharArray()){
             System.out.print(c);
             Action.delay(100);
@@ -61,12 +64,11 @@ public class Action{
     public static void Play(Pet pet, Activity.ActivityType activity){ //Input is the chosen pet and activity.
         Object activityList[][] = pet.getActivityList();
         float activityMultiplier = 0;
+        String audioToPlay;
 
         for (int i = 0; i < activityList.length; i++){
             for (int j = 0; j < activityList[i].length; j++){ //Loops through the list of the Pet's Activities
-
                 Object currentItem = activityList[i][j]; //Assigns current item to a temporary object
-
                 if (currentItem instanceof Activity.ActivityType) { //Checks if the current item is an Activity.ActivityType
                     Activity.ActivityType currentActivity = (Activity.ActivityType) currentItem; //If so then we cast that object to an Activity.ActivityType
                     if (currentActivity.equals(activity)) { //Then check if that item is equal to the activitytype chosen, if so get the appropriate multiplier.
@@ -79,22 +81,28 @@ public class Action{
         float energy_consumption = ((1/(pet.getMood()+pet.getHunger()))*100)+(Math.abs(activity.getActivityValue())*(pet.getEnergy()/100)*0.5f);
         float play_value = activity.getActivityValue() * (activityMultiplier/100);
 
-        if ((play_value + pet.getMood()) >= 100) { //Takes into account if Mood goes beyond 100 or below 1
+        if (play_value < 0){
+            audioToPlay = "statDown";
+        }else {
+            audioToPlay = "statUp";
+        }
+
+        if ((play_value + pet.getMood()) >= 100) { //Takes into account if Mood goes beyond 100 or below 0
             pet.setMood(100.0f);
-        }else if ((play_value + pet.getMood()) <= 1) {
-            pet.setMood(1.0f);
+        }else if ((play_value + pet.getMood()) <= 0) {
+            pet.setMood(0.0f);
         }else {
             pet.setMood(pet.getMood() + play_value);
         }
 
-        if ((pet.getHunger() - (energy_consumption/2)) <= 1){ //Hunger gets reduced by half of energy_consumption
-            pet.setHunger(1.0f);
+        if ((pet.getHunger() - (energy_consumption/2)) <= 0){ //Hunger gets reduced by half of energy_consumption
+            pet.setHunger(0.0f);
         }else {
              pet.setHunger(pet.getHunger() - (energy_consumption/2));
         }
 
-        if ((pet.getEnergy() - (energy_consumption)) <= 1){ //Energy gets reduced by energy_consumption
-            pet.setEnergy(1.0f);
+        if ((pet.getEnergy() - (energy_consumption)) <= 0){ //Energy gets reduced by energy_consumption
+            pet.setEnergy(0.0f);
         }else {
              pet.setEnergy(pet.getEnergy() - (energy_consumption));
         }
@@ -123,6 +131,8 @@ public class Action{
 
         Action.runIdleAnimation(pet);
 
+        Action.playAudio(audioToPlay);
+
         for (char c: msg2.toCharArray()){
             System.out.print(c);
             Action.delay(100);
@@ -146,6 +156,7 @@ public class Action{
         int restRng = new Random().nextInt(10);
         int rest_value;
         int mood_value;
+        String audioToPlay;
 
         if (restRng < 7){ //70% chance, standard energy value
             rest_value = 30;
@@ -173,6 +184,10 @@ public class Action{
         if (pet.getMood() >= 100) { // Takes into account if mood goes past 100
             pet.setMood(100);
         }
+
+        if (pet.getMood() <= 0) { // Takes into account if mood goes bellow 0
+            pet.setMood(0);
+        }
         
         if ((rest_value + pet.getEnergy()) >= 100) {
             rest_value = (int) (Math.round(((100+rest_value)-(pet.getEnergy()+rest_value))* 10) / 10.0f);
@@ -184,13 +199,16 @@ public class Action{
             pet.updateEmotionalState();
         }
 
-        String sign = "";
+        String sign ;
         if (mood_value > 0){
             sign = "+";
+            audioToPlay = "statUp";
         }else if (mood_value < 0){
             sign = "-";
+            audioToPlay = "statDown";
         }else {
             sign = "+";
+            audioToPlay = "statUp";
         }
 
         String msg1 = pet.getPetName() + " Is Resting...";
@@ -208,6 +226,7 @@ public class Action{
             System.out.print(c);
             Action.delay(100);
         }
+        Action.playAudio(audioToPlay);
         System.out.println("\n");
         for (char c: msg3.toCharArray()){
             System.out.print(c);
@@ -218,6 +237,7 @@ public class Action{
     }
 
     public static void triggerDeath(ArrayList<Pet> pets, Pet petToDie) {
+        Action.playAudio("error");
         String msg1 = "You've Neglected " + petToDie.getPetName() + "...";
         String msg2 = petToDie.getPetName() + " is in a better place now.";
         for (Pet mypets : pets){
@@ -240,6 +260,37 @@ public class Action{
                 break;
             }
         }
+    }
+
+    public static Clip playAudio(String filename, boolean loop) {
+        try {
+            File file = new File("audio/"+filename+".wav");
+            AudioInputStream audioStream = null;
+            try {
+                audioStream = AudioSystem.getAudioInputStream(file);
+            } catch (UnsupportedAudioFileException | IOException ex) {
+            }
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            
+            if(loop){
+                if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                    gainControl.setValue(-10.0f); // Adjust this number as needed
+                }
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }else {
+                clip.start();
+            }
+            return clip;
+            // Action.delay(2000);
+        } catch (LineUnavailableException | IOException ex) {
+            return null;
+        }        
+    }
+
+    public static void playAudio(String filename) {
+        playAudio(filename, false);       
     }
 
     public static void printSprite(Species petPath, int frame){ //Work in Progress

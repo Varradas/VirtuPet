@@ -8,9 +8,14 @@ public enum Activity {
     }
 
     public enum Dog implements ActivityType{
-        WALK(20),
+        TALK(20),
+        PET(20),
+        PLAY(20),
         FETCH(20),
-        PLAY(20);
+        WALK(20),
+        LEARN_TRICK(20),
+        SOLVE_PUZZLE(20),
+        AGILITY_COURSE(20);
 
         public final float activityValue;
 
@@ -25,8 +30,12 @@ public enum Activity {
     }
 
     public enum Cat implements ActivityType{
-        ACT1(2),
-        ACT2(2);
+        TALK(20),
+        PET(20),
+        PLAY(20),
+        CLIMB_CAT_TREE(20),
+        SCRATCH_POST(20),
+        CHASE_LASER(20);
 
         public final float activityValue;
 
@@ -41,7 +50,13 @@ public enum Activity {
     }
 
     public enum Bird implements ActivityType{
-        ACT1(3);
+        TALK(20),
+        PET(20),
+        PLAY(20),
+        FORAGE(20),
+        SHALLOW_BATHE(20),
+        BUILD_NEST(20),
+        LOFT_FLIGHT(20);
 
         public final float activityValue;
 
@@ -56,9 +71,13 @@ public enum Activity {
     }
 
     public enum Rabbit implements ActivityType{
-        ACT1(4),
-        ACT2(4),
-        ACT3(4);
+        TALK(20),
+        PET(20),
+        PLAY(20),
+        RUN_AROUND(20),
+        DIGGING_BOX(20),
+        CHEW_STICK(20),
+        TUNNEL(20);
 
         public final float activityValue;
 
@@ -71,56 +90,4 @@ public enum Activity {
             return activityValue;
         }
     }
-
-    public enum Hamster implements ActivityType{
-        ACT1(5),
-        ACT2(5),
-        ACT3(5);
-
-        public final float activityValue;
-
-        Hamster (float activityValue){
-            this.activityValue = activityValue;
-        }
-
-        @Override
-        public float getActivityValue() {
-            return activityValue;
-        }
-    }
-
-    public enum GuineaPig implements ActivityType{
-        ACT1(6),
-        ACT2(6),
-        ACT3(6);
-
-        public final float activityValue;
-
-        GuineaPig (float activityValue){
-            this.activityValue = activityValue;
-        }
-
-        @Override
-        public float getActivityValue() {
-            return activityValue;
-        }
-    }
-
-    public enum Gecko implements ActivityType{
-        ACT1(7),
-        ACT2(7),
-        ACT3(7);
-
-        public final float activityValue;
-
-        Gecko (float activityValue){
-            this.activityValue = activityValue;
-        }
-
-        @Override
-        public float getActivityValue() {
-            return activityValue;
-        }
-    }
-
 }

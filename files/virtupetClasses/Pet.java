@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import virtupetClasses.Activity.ActivityType;
 
-public class Pet implements Serializable{
+abstract public class Pet implements Serializable{
     private Species species;
     protected String name;
     protected double emotional_value;
@@ -15,10 +15,10 @@ public class Pet implements Serializable{
     protected float hunger_level;
     protected float mood_level;
     protected float energy;
-    protected Object[][] activity_multiplier; //Bonuses/Penalties in each activity for each pet
-    protected Object[][] food_multiplier; //Bonuses/Penalties in each food for each pet
+    protected Object[][] activity_multiplier; //Determines if an activity will increase/decrease stats in each activity for each pet
+    protected Object[][] food_multiplier; //Determines the effectiveness of each food in each food for each pet
 
-    public Pet(String name, Species species) { //Test out the RNG for hunger, mood and level,
+    public Pet(String name, Species species) {
         SpeciesActivities speciesActivity = new SpeciesActivities();
         Random random = new Random();
         Activity.ActivityType[] activities = (ActivityType[]) speciesActivity.getSpeciesActivities(species);
@@ -37,17 +37,16 @@ public class Pet implements Serializable{
 
         for (int i = 0; i < activities.length; i++) {
             activity_multiplier[i][0] = activities[i];  // Activity name
-            activity_multiplier[i][1] = Math.round(random.nextFloat(-100.0f, 100.0f) * 10) / 10.0f;  // Random value
+            activity_multiplier[i][1] = Math.round(random.nextFloat(-100.0f, 100.0f) * 10) / 10.0f;  // Random value, from -100% to 100% of the activity's value
         }
 
         for (int i = 0; i < food.length; i++) {
-            food_multiplier[i][0] = food[i];  // Activity name
-            food_multiplier[i][1] = Math.round(random.nextFloat(1.0f, 100.0f) * 10) / 10.0f;  // Random value
+            food_multiplier[i][0] = food[i];  // Food name
+            food_multiplier[i][1] = Math.round(random.nextFloat(1.0f, 100.0f) * 10) / 10.0f;  // Random value, from 1% to 100% of the food's value
         }
     }
 
-    public void updateEmotionalState(){ //Not final, needs to be overridden for each species
-        // emotional_value = Math.round(((((energy/35)+(hunger_level/10.8))/3) + (mood_level/16.7)) * 10.0)/10.0;
+    public void updateEmotionalState(){ //emotional value equation is changed per species
         emotional_value = Math.round(((((energy/50)+(hunger_level/25))/3) + (mood_level/12.5)) * 10.0)/10.0;
         if (emotional_value <= 0.0f){
             emotional_value = 0.0f;
@@ -74,17 +73,29 @@ public class Pet implements Serializable{
         }
     }
 
-    public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){
-        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 0.3f;
+    public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){ //Ending multiplier changes per species
+        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 1f;
         energy = Math.round((energy-energyDecayRate) * 10.0f)/10.0f;
 
         float hungerDecayRate = 0.5f +((100-energy)/100) * 1f;
         hunger_level = Math.round((hunger_level-hungerDecayRate) * 10.0f)/10.0f;
 
-        float moodDecayRate = 0.5f + ((100-energy)/100) * 0.3f;
+        float moodDecayRate = 0.5f + ((100-energy)/100) * 1f;
         mood_level = Math.round((mood_level-moodDecayRate) * 10.0f)/10.0f;
 
-        if(energy <= 0 && hunger_level <= 0 && mood_level <= 0){
+        if (energy < 0){
+            energy = 0.0f;
+        }
+        if (hunger_level < 0){
+            hunger_level = 0.0f;
+        }
+        if (mood_level < 0){
+            mood_level = 0.0f;
+        }
+
+        updateEmotionalState();
+
+        if(energy <= 0 && hunger_level <= 0 && mood_level <= 0){ //Unlikely scenario but it's there     ╮(￣▽￣"")╭  
             Action.triggerDeath(mypets, pet);
         }
 
@@ -145,7 +156,7 @@ public class Pet implements Serializable{
         return activity_multiplier;
     }
 
-    //Getting Activity and their Multipliers, 0 for name, 1 for value
+    //Getters Activity and their Multipliers, 0 for name, 1 for value. Important to match appropriate activities per species.
 
     public ActivityType getActivityName(int n){
         if (activity_multiplier[n][0] instanceof Activity.ActivityType activityName) {

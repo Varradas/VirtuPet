@@ -7,10 +7,7 @@ public class SpeciesActivities {
         DOG, 
         CAT, 
         BIRD, 
-        RABBIT, 
-        HAMSTER, 
-        GUINEA_PIG,
-        GECKO;
+        RABBIT,
 
     }
 
@@ -27,15 +24,6 @@ public class SpeciesActivities {
             }
             case RABBIT -> {
                 return Activity.Rabbit.values();
-            }
-            case HAMSTER -> {
-                return Activity.Hamster.values();
-            }
-            case GUINEA_PIG -> {
-                return Activity.GuineaPig.values();
-            }
-            case GECKO -> {
-                return Activity.Gecko.values();
             }
             default -> throw new IllegalArgumentException("Unknown type: " + species);
         }

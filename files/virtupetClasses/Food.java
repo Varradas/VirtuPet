@@ -1,9 +1,13 @@
 package virtupetClasses;
 
 public enum Food{
-    CHICKEN(30f),
-    PEAS(20f),
-    FISH(14f);
+    PET_KIBBLE(30),
+    VEGETABLE(30),
+    FRUIT(30),
+    TREAT(30),
+    FISH(30),
+    MEAT(30),
+    CHICKEN(30);
 
     public final float foodValue;
 

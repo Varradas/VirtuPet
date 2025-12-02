@@ -70,6 +70,7 @@ public class test {
                 }
                 case 5 -> {
                     if (!pets.isEmpty()){
+                        Action.playAudio("statDown");
                         Action.displayAllPetDetails(pets);
                         // for (Pet pet: pets){
                         //     System.out.println(pet.getPetName());
@@ -95,7 +96,13 @@ public class test {
                     }
                 }
                 case 7 -> {
-                    Action.triggerDeath(pets, pets.get(1));
+                    Action.playAudio("select");
+                }
+                case 8 -> {
+                    Action.playAudio("back");
+                }
+                case 9 -> {
+                    Action.playAudio("statUp");
                 }
                 default -> {
                     System.out.println("\nInvalid input. Please try again.\n");

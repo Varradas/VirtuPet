@@ -1,5 +1,6 @@
 package virtupetClasses;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public final class Dog extends Pet{
@@ -41,4 +42,32 @@ public final class Dog extends Pet{
         }
     }
     
+    @Override
+    public void updateStatsWhenTimePass(ArrayList<Pet> mypets, Pet pet){
+        float energyDecayRate = 0.5f + ((100-hunger_level)/100) * 10.0f;
+        energy = Math.round((energy-energyDecayRate) * 10.0f)/10.0f;
+
+        float hungerDecayRate = 0.5f +((100-energy)/100) * 1.0f;
+        hunger_level = Math.round((hunger_level-hungerDecayRate) * 10.0f)/10.0f;
+
+        float moodDecayRate = 0.5f + ((100-energy)/100) * 0.5f;
+        mood_level = Math.round((mood_level-moodDecayRate) * 10.0f)/10.0f;
+
+        if (energy < 0){
+            energy = 0.0f;
+        }
+        if (hunger_level < 0){
+            hunger_level = 0.0f;
+        }
+        if (mood_level < 0){
+            mood_level = 0.0f;
+        }
+
+        updateEmotionalState();
+
+        if(energy <= 0 && hunger_level <= 0 && mood_level <= 0){
+            Action.triggerDeath(mypets, pet);
+        }
+
+    }
 }
