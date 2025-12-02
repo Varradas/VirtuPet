@@ -90,10 +90,9 @@ java VirtuPet
 ---
 
 ## Example Output
-```
+
 ![alt text](https://github.com/Varradas/VirtuPet/blob/544a6ad1c55dbb3d505951a5697723e200b9c14f/dev%20stuff/pic/Screenshot%20(34).png?raw=true)
 
-```
 
 ---
 
