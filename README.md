@@ -1,9 +1,8 @@
-# 🐾 VirtuPet
-## The Intelligent Virtual Pet Care System
+<h1 align = "center">🐾 VirtuPet 🐾</h1>
+<h2 align = "center">The Intelligent Virtual Pet Care System</h2>
+<p align = "center">CS-211 Final Project | 3NIGMA | CS-2102</p>
 
-CS-211 Final Project | 3NIGMA | CS-2102 
-
-## 🧠 Project Overview
+## 🧠 Overview
 **VirtuPet** is a **console-based Java application** that allows users to adopt, feed, and interact with virtual pets in a simulated environment. The program demonstrates the practical application of Object-Oriented Programming (OOP) concepts—encapsulation, inheritance, polymorphism, and abstraction—while implementing modular design, proper file handling, and randomization for pet stats and behaviors.
 
 Users can adopt a new pet (Dog, Cat, Bird, Rabbit), feed pets with different types of food, perform activities to boost pet stats, monitor emotional state and overall well-being, save and load progress, and handle pet deaths if neglected.
@@ -49,7 +48,7 @@ All pet data, including activity multipliers and food effectiveness, are stored 
 ---
 
 ## How to Run the Program
-Open your terminal in the `file/` folder and run:
+Open your terminal in the `files/` folder and run:
 ```
 javac virtupetClasses/*.java
 ```
