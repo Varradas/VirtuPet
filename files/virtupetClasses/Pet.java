@@ -15,8 +15,8 @@ abstract public class Pet implements Serializable{
     protected float hunger_level;
     protected float mood_level;
     protected float energy;
-    protected Object[][] activity_multiplier; //Determines if an activity will increase/decrease stats in each activity for each pet
-    protected Object[][] food_multiplier; //Determines the effectiveness of each food in each food for each pet
+    protected final Object[][] activity_multiplier; //Determines if an activity will increase/decrease stats in each activity for each pet
+    protected final Object[][] food_multiplier; //Determines the effectiveness of each food in each food for each pet
 
     public Pet(String name, Species species) {
         SpeciesActivities speciesActivity = new SpeciesActivities();

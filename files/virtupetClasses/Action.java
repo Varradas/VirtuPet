@@ -387,13 +387,6 @@ public class Action{
 
     public static void savePetData(ArrayList<Pet> pets){   
         
-        if (pets.isEmpty()) {
-            System.out.println("""  
-                                                \u001b[38;5;196m
-                                \nNo Pet Data to Save.\n
-                                                \u001b[0m""");
-            return;
-        }
 
         Path filePath = Paths.get("data", "petData.ser");
         
